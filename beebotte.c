@@ -1,4 +1,20 @@
-char requete[1024] = "\"http://api.beebotte.com/v1/public/data/read/vberry/testVB/msg\"";
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <netdb.h>
+#include <time.h>
+
+
+char requete[1024] = "\"http://api.beebotte.com/v1/public/data/read/vberry/partie0/msg\"";
+
+void error(const char *msg)
+{ perror(msg); exit(0);}
+
 
 int sendToBeBotte(char *canal, char *clefCanal, char *ressource, char *data[]) {
   // data est un tableau de chaines (char[]), c-a-d un tableau de char a deux dimensions
@@ -93,17 +109,23 @@ int sendToBeBotte(char *canal, char *clefCanal, char *ressource, char *data[]) {
   return 0;
 }
 
-char *infoApublier[4]; // exemple de 4 infos a publier
-	infoApublier[0] = "type_msg=BUT";
-	infoApublier[1] = "type_ent=VB";
-	infoApublier[2] = mess3;
-	infoApublier[3] = mess4;
+
+
+int main(void)
+{
+
+	char *infoApublier[5]; // exemple de 5 infos a publier
+	infoApublier[0] = "type_msg=IP";
+	infoApublier[1] = "type_ent=RJ";
+	infoApublier[2] = "RFID=102030456";
+	infoApublier[3] = "couleur=rouge";
+	infoApublier[4] = "data=162.38.111.103";
 	// (attention : strcpy(infoApublier[3],"data=163.11.111.11") 
 	//    ne marche pas car pas d'espace memoire alloue encore a infoApublier[3] ) 
 
 
 	// !! TO DO : mettre ici le nom du "channel" ou on veut envoyer des donneees
-	char *channel = "testVB";
+	char *channel = "partie0";
 	/* Par convention dans FAR on parle sur ressource "msg"
 	sur laquelle on envoie une chaine contenant les couples clef:valeur separes par des 			virgules */
 	char *ressource = "msg"; 
@@ -112,5 +134,32 @@ char *infoApublier[4]; // exemple de 4 infos a publier
 	// canal testVB : 1494771555601_5SGQdxJaJ8O1HBj4
 	char *channelKey = "1494771555601_5SGQdxJaJ8O1HBj4";
 
+	sendToBeBotte(channel,channelKey,ressource,infoApublier);	
+	return 0;
 
-sendToBeBotte(channel,channelKey,ressource,infoApublier);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
