@@ -1,6 +1,7 @@
 #include <ballon.c>
 #include <position.c>
 #include <beebotte.c>
+#include <deplacement.c>
 #define X_TERRAIN 8
 #define Y_TERRAIN 12
 

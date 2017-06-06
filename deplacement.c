@@ -1,8 +1,8 @@
 #include "gopigo.h"
 #include <math.h>
 #include <stdio.h>
+#include <pos.c>
 #define TAILLE_CASE 20
-#define PI 3.14159265
 
 void avancer(dist){
 	int enc_right = 0;
@@ -48,9 +48,12 @@ void makeRot(rot, newRot){
 }
 
 void deplacementDis(int xCible, int yCible){
-	int x = 0;
-	int y = 0;
-    int rot = 0;
+
+    int* pos = recup_pos();
+    int x = pos[0];
+    int y = pos[1];
+    int rot = pos[2];
+
 	int xdist = xCible - x;
 	int ydist = yCible - y;
 	int xdist_enc = TAILLE_CASE*xdist*11/12;
@@ -87,32 +90,43 @@ void deplacementDis(int xCible, int yCible){
                 rot = (rot+90)%360;
             }
             else if(xdist < 0){
-                rot = turnLeft(90);
+                turnLeft(90);
                 rot = (rot+270)%360;
             }
         }
         else if(rot == 180){
             avancer(TAILLE_CASE*11/12);
             if(xdist < 0){
-                rot = turnRight(90);
+                turnRight(90);
                 rot = (rot+90)%360;
             }
             else if(xdist > 0){
-                rot = turnLeft(90);
+                turnLeft(90);
                 rot = (rot+270)%360;
             }
         }
+        ecrire_pos(x,0,rot,0);
         return 3;
     }
     else if(ydist > 1){
-        if(rot == 0 || rot == 180){
+        if(rot == 0){
             avancer(TAILLE_CASE*11/12);
+            ecrire_pos(x,y+1,70,0);
+        }
+        else if(rot == 180){
+            avancer(TAILLE_CASE*11/12);
+            ecrire_pos(x,y-1,70,0);
         }
         return 3;
     }
     else if(ydist == 0 && xdist != 0){
-        if(rot == 90 || rot == 270){
+        if(rot == 90){
             avancer(TAILLE_CASE*11/12);
+            ecrire_pos(x+1,y,70,0);
+        }
+        else if(rot == 270){
+            avancer(TAILLE_CASE*11/12);
+            ecrire_pos(x-1,y-1,70,0);
         }
         return 3;
     }
@@ -121,17 +135,3 @@ void deplacementDis(int xCible, int yCible){
     }
 }
 
-
-int main(void)
-{
-	//deplacementDis(7,7);
-	 if(init()==-1)
-        exit(1);
-    led_on(1);
-
-    pi_sleep(4000);
-    
-    //deplacementDis(3,3);
-
-	return 0;
-}
