@@ -23,29 +23,8 @@ int xSP = -1;
 int ySP = -1;
 char* diversSP;
 
-/* !! TODO remplacer 'testVB' par le canal dans lequel publier (ex: partie12)
-    (ici msg est la "ressource" que ce canal attend */
-char* canal = "testVB";
-
-    /* Par convention dans FAR on parle sur ressource "msg"
-      sur laquelle on envoie une chaine contenant les couples clef:valeur separes par des virgules */
-char* ressource = "msg";
-char* ressource2 = "msg?limit=15&time-range=1hour";
-
-    // !! TO DO : mettre ci-dessous le token du canal !!
-    // canal partie0 : 1494793564147_KNl54g97mG89kQSZ
-    // canal testVB : 1494771555601_5SGQdxJaJ8O1HBj4
-char* clefCanal = "1494771555601_5SGQdxJaJ8O1HBj4";
-
 int sock;
-char[6] PORTRobotSP = 2048;
-
-
-// ======= FONCTIONS  ======= //
-
-int checkFinPartie() {
-    return 0;
-}
+char PORTRobotSP[6] = "2048";
 
 // =========================================== //
 
@@ -64,18 +43,16 @@ int lancerServeurPosition() {
     sock = socket(AF_INET, SOCK_STREAM, 0);
 
     /* Configuration */
-    char port[6] = PORTRobotSP;
-
     sin.sin_addr.s_addr = htonl(INADDR_ANY);
     sin.sin_family = AF_INET;
-    sin.sin_port = htons(strtoul(port,NULL,10));
+    sin.sin_port = htons(strtoul(PORTRobotSP,NULL,10));
     bind(sock,(struct sockaddr*)&sin, recsize);
     printf("\nconfig ok");
 
     /* Demarrage du listage (mode serveur) */
     listen(sock, 5);
 
-    printf("\nServeur fonctionnel sur le port %s",port);
+    printf("\nServeur fonctionnel sur le port %s",PORTRobotSP);
 
     while(1) {
     /* Attente d'une connexion client */
@@ -84,23 +61,20 @@ int lancerServeurPosition() {
             csock, inet_ntoa(csin.sin_addr), htons(csin.sin_port));
 
         // Récupération de la requete du client
-        char requete[1024];
+        char* requete = malloc(1024*sizeof(char));
         int res;
-        recv(csock,requete,sizeof(requete)-1,0);
+        recv(csock,requete,strlen(requete)-1,0);
 
-        char* copy;
-        copy = malloc(50*sizeof(char));
-        strcpy(copy,requete);
+        printf("\nJe reçois la requete : %s",requete);
 
         // Découpage du message reçu        
-        xSP = atoi(strtok(copy,","));
+        xSP = atoi(strtok(requete,","));
         ySP = atoi(strtok(NULL,","));
-        diversSP = strtok(NULL,",");    
+        diversSP = strtok(NULL,",");
 
         //Mon code
+        ecrire_pos(xSP, ySP, diversSP, 1);
 
-        ecrire_pos(xSP, int ySP, diversSP, 1)
-        
         close(csock); 
     }
 	return 0;

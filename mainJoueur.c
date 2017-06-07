@@ -3,32 +3,44 @@
 #include <beebotte.c>
 #include <deplacement.c>
 #include "serveurRobotPosition.c"
+#include "serveur_robot.c"
 #define X_TERRAIN 8
 #define Y_TERRAIN 12
 
 
-void envoyerInfoJoueur(){}
-int partieFinie(){}
-int* recupInfoPartie(){}
-int debPartie(){}
+void envoyerInfoJoueur(){
+	return 1;
+}
+int partieFinie(){
+	return 0;
+}
+int* recupInfoPartie(){
+	return 1;
+}
+int debPartie(){
+	return 1;
+}
 int boutonDeclenche(){}
 int butValide(){}
 
 void reinitialiserDonnees(){
-	ecrire_pos(1, 1, 0);
+	ecrire_pos(1, 1, 0, 0);
 	enleverBallon();
 }
 
 int main(int argc, char *argv[])
 {	
+	ecrire_pos(1, 1, 0, 0);
+	enleverBallon();
 	int etat = 0;
 	while(partieFinie() == 0){
+
 		int pid = fork();
 		if(pid == 0){
 			switch(etat){
 				case 0: //Envoie des données joueur
 					if(envoyerInfoJoueur() == 1){ // Envoie des info joueur sur dweet ou autre
-						printf("Données non envoyées !\n");
+						printf("Données envoyées !\n");
 						etat = 1;
 					}
 					break;
@@ -55,10 +67,18 @@ int main(int argc, char *argv[])
 
 				case 3: //Se déplacer jusqu'au distributeur
 					etat = deplacementDist(xCible,yCible);
+					if(etat == 4){
+						int pid = fork();
+						if(pid != 0){
+							char* idBallon = server();
+							entrerBallon(idBallon);
+						}
+					}
 					break;
 
 				case 4: // Attendre de recevoir un ballon
-					if(getBallon() == 1){
+
+					if(ballonOK() == 1){
 						etat = 5;
 					}
 					else if(nouvellePos() == 1){
@@ -68,14 +88,14 @@ int main(int argc, char *argv[])
 
 				case 5: // Se deplacer jusqu'aux cages
 					etat = deplacementCage(Y_TERRAIN);
-					if(ballonPerime() == 1){
+					if(ballonOK() == 0){
 						enleverBallon();
 						etat = 3;
 					}
 					break;
 
 				case 55: // Attente aux cages
-					if(ballonPerime() == 1){
+					if(ballonOK() == 0){
 						enleverBallon();
 						etat = 3;
 					}

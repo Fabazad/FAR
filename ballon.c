@@ -8,7 +8,7 @@
 Fonction qui verifie si le robot possède un ballon en regardant dans le fichier ballon.txt
 Renvoie un booléen (0 ou 1)
 */
-int ballonPerime () {
+int ballonOK () {
 	FILE* fichier = NULL;
     fichier = fopen("ballon.txt", "r");
     char chaine[TAILLE_MAX] = ""; // Chaîne vide de taille TAILLE_MAX
@@ -22,7 +22,7 @@ int ballonPerime () {
 	{
 		time_t times = time(NULL);
 		int timeballon;
-		int idballon;
+		char* idballon;
 		memset (chaine, 0, sizeof (chaine));
 		fgets(chaine, TAILLE_MAX, fichier); 
 		chaine[strlen(chaine)] = '\0';
@@ -31,7 +31,7 @@ int ballonPerime () {
     	idballon = atoi(tok);
 		tok = strtok(NULL, " ");
 		timeballon = atoi(tok);
-		if(timeballon + 180 < times)
+		if(timeballon + 120 < times)
 		{
 			return 0; // Si le ballon est périmé
 		}
@@ -47,6 +47,17 @@ void enleverBallon(){
     fichier = fopen("ballon.txt", "w+");
     fclose(fichier);
 }
+
+void entrerBallon(char* idBallon){
+	time_t times = time(NULL);
+	FILE* fichier = NULL;
+    fichier = fopen("ballon.txt", "w+");
+    char chaine[TAILLE_MAX] = ""; // Chaîne vide de taille TAILLE_MAX
+    sprintf(chaine, "%s,%d",idBallon,times);
+    fprintf(fichier, chaine);
+    fclose(fichier);
+}
+
 
 int main(int argc, char *argv[]){
 	enleverBallon();
