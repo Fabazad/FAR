@@ -10,7 +10,6 @@ void envoyerInfoJoueur(){}
 int partieFinie(){}
 int* recupInfoPartie(){}
 int debPartie(){}
-int deplacementCage(){}
 int nouvellePos(){}
 int ballonPerime(){}
 void enleverBallon(){}
