@@ -11,7 +11,7 @@
 
 int sock;
 
-void GetData(char host[], int port, char file[])
+void getData(char host[], int port, char file[], char recup[])
 {
   /* Saisie des infos de connexion */
   
@@ -74,7 +74,7 @@ void GetData(char host[], int port, char file[])
 
   /* Reception de donnees du serveur */
   char buffer2[1024];
-  FILE *f = fopen("donnees.txt", "w");
+  FILE *f = fopen(recup, "w");
 
     int res = recv(sock, buffer2, sizeof(buffer2)-1, 0);
     //printf(" res =%i \n", res);
@@ -97,14 +97,39 @@ void GetData(char host[], int port, char file[])
 
 }
 
-int main(void)
+void recup_pos_db(void)
 {
 	char *host="api.beebotte.com";
 	int port = 80;
-	char file[100] = "/v1/public/data/read/vberry/TESTVB_MONITORING/msg?limit=2 ";
-	//char file[100] = "vberry/TESTVB_MONITORING";
+	char file[100] = "/v1/public/data/read/vberry/DBpartie0/msg?limit=2 ";
+	char recup[10] = "dist.txt";
 
-	GetData(host, port, file);
+	getData(host, port, file, recup);
 
-	return 1;
 }
+
+void recup_deb_partie(void)
+{
+	char *host="api.beebotte.com";
+	int port = 80;
+	char file[100] = "/v1/public/data/read/vberry/TESTVB_MONITORING/msg?limit=1 ";
+	char recup[20] = "deb_partie.txt";
+
+	getData(host, port, file, recup);
+
+}
+
+int main(void)
+{
+
+	recup_pos_db();
+	recup_deb_partie();
+	return 1;
+
+}
+
+
+
+
+
+
