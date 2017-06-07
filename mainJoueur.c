@@ -1,15 +1,22 @@
 #include <ballon.c>
-#include <position.c>
+#include <pos.c>
 #include <beebotte.c>
 #include <deplacement.c>
 #define X_TERRAIN 8
 #define Y_TERRAIN 12
 
 
-void envoyerInfoJoueur(){
-
-}
-
+void envoyerInfoJoueur(){}
+int partieFinie(){}
+int* recupInfoPartie(){}
+int debPartie(){}
+int deplacementCage(){}
+int nouvellePos(){}
+int ballonPerime(){}
+void enleverBallon(){}
+int boutonDeclenche(){}
+int butValide(){}
+void reinitialiserDonnees(){}
 
 int main(int argc, char *argv[])
 {	

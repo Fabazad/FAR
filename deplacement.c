@@ -1,7 +1,7 @@
 #include "gopigo.h"
 #include <math.h>
 #include <stdio.h>
-#include <pos.c>
+#include "pos.c"
 #define TAILLE_CASE 20
 
 void avancer(dist){
@@ -49,7 +49,7 @@ void makeRot(rot, newRot){
 
 void deplacementDis(int xCible, int yCible){
 
-    int* pos = recup_pos();
+    int* pos = recup_pos(); //on recupere la pos dans le ficher pos.txt
     int x = pos[0];
     int y = pos[1];
     int rot = pos[2];
@@ -80,9 +80,8 @@ void deplacementDis(int xCible, int yCible){
         }
     }
 
-
     //Se dépalcer
-    if(ydist == 1 && xdist != 0){
+    if(fabs(ydist) == 1 && xdist != 0){ //Si il reste une case verticale
         if(rot == 0){
             avancer(TAILLE_CASE*11/12);
             if(xdist > 0){
@@ -108,7 +107,7 @@ void deplacementDis(int xCible, int yCible){
         ecrire_pos(x,0,rot,0);
         return 3;
     }
-    else if(ydist > 1){
+    else if(fabs(ydist) > 1){ //S'il reste plusieurs de case verticale
         if(rot == 0){
             avancer(TAILLE_CASE*11/12);
             ecrire_pos(x,y+1,70,0);
@@ -119,7 +118,7 @@ void deplacementDis(int xCible, int yCible){
         }
         return 3;
     }
-    else if(ydist == 0 && xdist != 0){
+    else if(ydist == 0 && xdist != 0){ //S'il n'y a plus de case verticale mais il y a des cases horizontales
         if(rot == 90){
             avancer(TAILLE_CASE*11/12);
             ecrire_pos(x+1,y,70,0);
@@ -135,3 +134,45 @@ void deplacementDis(int xCible, int yCible){
     }
 }
 
+void deplacementCage(int yCible){
+
+    int* pos = recup_pos(); //on recupere la pos dans le ficher pos.txt
+    int x = pos[0];
+    int y = pos[1];
+    int rot = pos[2];
+
+    int xdist = xCible - x;
+    int ydist = yCible - y;
+    int xdist_enc = TAILLE_CASE*xdist*11/12;
+    int ydist_enc = TAILLE_CASE*ydist*11/12;
+    
+
+    //verifier la rotation
+    if(rot != 0 && rot != 180){
+        if(ydist > 0){
+            makeRot(rot, 0);
+            rot = 0;
+        }
+        else if(ydist < 0){
+            makeRot(rot, 0);
+            rot = 180;
+        }
+    }
+
+    //Se dépalcer
+    if(fabs(ydist) > 0){ //S'il reste des cases verticales
+        if(rot == 0){
+            avancer(TAILLE_CASE*11/12);
+            ecrire_pos(x,y+1,70,0);
+        }
+        else if(rot == 180){
+            avancer(TAILLE_CASE*11/12);
+            ecrire_pos(x,y-1,70,0);
+        }
+        return 5;
+    }
+    
+    else{
+        return 55;
+    }
+}
