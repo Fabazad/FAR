@@ -12,22 +12,25 @@ int* recup_pos () {
 	FILE* fichier = NULL;
     fichier = fopen("pos.txt", "r");
     char chaine[TAILLE_MAX] = ""; // Chaîne vide de taille TAILLE_MAX
-
     if (fichier != NULL) //cas de fichier non vide
     {
+
         // On récupère les coordonnées présentes dans le fichier
     	fgets(chaine, TAILLE_MAX, fichier); 
         chaine[strlen(chaine)] = '\0';
-        printf(strcat(chaine,"\n"));
     	char *tok = strtok(chaine, ",");
     	pos[0] = atoi(tok);
-		tok = strtok(NULL, " ");
+		tok = strtok(NULL, ",");
 		pos[1] = atoi(tok);
-        tok = strtok(NULL, " ");
+        tok = strtok(NULL, ",");
+
+        pos[2] = atoi(tok);
+        tok = strtok(NULL, ",");
+
         pos[3] = atoi(tok);
-        tok = strtok(NULL, " ");
-        pos[4] = atoi(tok);
+
         fclose(fichier);
+
     }
     else // cas de fichier vide
     {

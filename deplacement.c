@@ -1,13 +1,14 @@
 #include "gopigo.h"
-#include <math.h>
 #include <stdio.h>
+#include <math.h>
 #define TAILLE_CASE 20
 
-void avancer(dist){
+void avancer(int dist){
+    printf("test");
 	int enc_right = 0;
-
     int enc_init_right = enc_read(1);
     bwd();
+    printf("test2 %d \n",dist);
     while(enc_right < dist){
     	enc_right = enc_read(1) - enc_init_right;
     	printf("right : %i\n",enc_right);
@@ -15,7 +16,7 @@ void avancer(dist){
     stop();
 }
 
-void turnRight(rot){
+void turnRight(int rot){
     int enc = 0;
     int enc_init = enc_read(0);
     int enc_rot = 15*rot/90;
@@ -26,7 +27,7 @@ void turnRight(rot){
     stop();
 }
 
-void turnLeft(rot){
+void turnLeft(int rot){
     int enc = 0;
     int enc_init = enc_read(1);
     int enc_rot = 15*rot/90;
@@ -37,7 +38,7 @@ void turnLeft(rot){
     stop();
 }
 
-void makeRot(rot, newRot){
+void makeRot(int rot, int newRot){
     if(newRot - rot > 0){
         turnRight(newRot - rot);
     }
@@ -46,7 +47,7 @@ void makeRot(rot, newRot){
     }
 }
 
-int deplacementDist(int xCible, int yCible){
+int deplacementDist(int xCible, int yCible){   
 
     int* pos = recup_pos(); //on recupere la pos dans le ficher pos.txt
     int x = pos[0];
@@ -58,7 +59,7 @@ int deplacementDist(int xCible, int yCible){
 	int xdist_enc = TAILLE_CASE*xdist*11/12;
 	int ydist_enc = TAILLE_CASE*ydist*11/12;
 	
-
+    printf("x:%d_y:%d_rot:%d\n",x,y,rot);
     //verifier la rotation
     if(rot != 0 && rot != 90 && rot != 180 && rot != 270){
         if(ydist > 0){
@@ -78,9 +79,8 @@ int deplacementDist(int xCible, int yCible){
             rot = 270;
         }
     }
-
     //Se dépalcer
-    if(fabs(ydist) == 1 && xdist != 0){ //Si il reste une case verticale
+    if(abs(ydist) == 1 && xdist != 0){ //Si il reste une case verticale
         if(rot == 0){
             avancer(TAILLE_CASE*11/12);
             if(xdist > 0){
@@ -103,28 +103,29 @@ int deplacementDist(int xCible, int yCible){
                 rot = (rot+270)%360;
             }
         }
-        ecrire_pos(x,0,rot,0);
+        ecrire_pos(x,y+1,rot,0);
         return 3;
     }
-    else if(fabs(ydist) > 1){ //S'il reste plusieurs de case verticale
+    else if(abs(ydist) > 1){ //S'il reste plusieurs de case verticale
         if(rot == 0){
+            printf("Avancer(%d)\n",TAILLE_CASE*11/12);
             avancer(TAILLE_CASE*11/12);
-            ecrire_pos(x,y+1,70,0);
+            ecrire_pos(x,y+1,0,0);
         }
         else if(rot == 180){
             avancer(TAILLE_CASE*11/12);
-            ecrire_pos(x,y-1,70,0);
+            ecrire_pos(x,y-1,180,0);
         }
         return 3;
     }
-    else if(ydist == 0 && xdist != 0){ //S'il n'y a plus de case verticale mais il y a des cases horizontales
+    else if(ydist == 0 && xdist != 0){ //S'il n'y a plus de case verticale mais qu'il y a des cases horizontales
         if(rot == 90){
             avancer(TAILLE_CASE*11/12);
-            ecrire_pos(x+1,y,70,0);
+            ecrire_pos(x+1,y,90,0);
         }
         else if(rot == 270){
             avancer(TAILLE_CASE*11/12);
-            ecrire_pos(x-1,y-1,70,0);
+            ecrire_pos(x-1,y-1,270,0);
         }
         return 3;
     }
@@ -157,7 +158,7 @@ int deplacementCage(int yCible){
     }
 
     //Se dépalcer
-    if(fabs(ydist) > 0){ //S'il reste des cases verticales
+    if(abs(ydist) > 0){ //S'il reste des cases verticales
         if(rot == 0){
             avancer(TAILLE_CASE*11/12);
             ecrire_pos(x,y+1,70,0);
