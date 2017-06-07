@@ -28,7 +28,7 @@ int ballonOK () {
 		chaine[strlen(chaine)] = '\0';
 
     	char *tok = strtok(chaine, ",");
-    	idballon = atoi(tok);
+    	idballon = tok;
 		tok = strtok(NULL, " ");
 		timeballon = atoi(tok);
 		if(timeballon + 120 < times)
@@ -59,6 +59,6 @@ void entrerBallon(char* idBallon){
 }
 
 
-int main(int argc, char *argv[]){
+/*int main(int argc, char *argv[]){
 	enleverBallon();
-}
+}*/

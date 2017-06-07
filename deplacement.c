@@ -1,7 +1,6 @@
 #include "gopigo.h"
 #include <math.h>
 #include <stdio.h>
-#include "pos.c"
 #define TAILLE_CASE 20
 
 void avancer(dist){
@@ -47,7 +46,7 @@ void makeRot(rot, newRot){
     }
 }
 
-void deplacementDis(int xCible, int yCible){
+int deplacementDist(int xCible, int yCible){
 
     int* pos = recup_pos(); //on recupere la pos dans le ficher pos.txt
     int x = pos[0];
@@ -134,16 +133,14 @@ void deplacementDis(int xCible, int yCible){
     }
 }
 
-void deplacementCage(int yCible){
+int deplacementCage(int yCible){
 
     int* pos = recup_pos(); //on recupere la pos dans le ficher pos.txt
     int x = pos[0];
     int y = pos[1];
     int rot = pos[2];
 
-    int xdist = xCible - x;
     int ydist = yCible - y;
-    int xdist_enc = TAILLE_CASE*xdist*11/12;
     int ydist_enc = TAILLE_CASE*ydist*11/12;
     
 

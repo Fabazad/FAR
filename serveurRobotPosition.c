@@ -73,7 +73,7 @@ int lancerServeurPosition() {
         diversSP = strtok(NULL,",");
 
         //Mon code
-        ecrire_pos(xSP, ySP, diversSP, 1);
+        ecrire_pos(xSP, ySP, (int)diversSP, 1);
 
         close(csock); 
     }

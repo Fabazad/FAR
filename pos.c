@@ -44,7 +44,7 @@ void ecrire_pos(int x, int y, int rot, int new) {
     fprintf(fichier, chaine);
     fclose(fichier);
 
-    int possedeBallon = possedeBallon();
+    int possedeBallon = ballonOK();
     if(new){
         fichier = fopen("monitoring/dataPosition/verifiedPosition.txt", "w+");
         char chaine[TAILLE_MAX] = ""; // Chaîne vide de taille TAILLE_MAX

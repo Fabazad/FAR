@@ -1,27 +1,33 @@
-#include <ballon.c>
-#include <pos.c>
-#include <beebotte.c>
-#include <deplacement.c>
+#include "ballon.c"
+#include "pos.c"
+#include "deplacement.c"
 #include "serveurRobotPosition.c"
 #include "serveur_robot.c"
 #define X_TERRAIN 8
 #define Y_TERRAIN 12
 
 
-void envoyerInfoJoueur(){
+int envoyerInfoJoueur(){
 	return 1;
 }
 int partieFinie(){
 	return 0;
 }
-int* recupInfoPartie(){
-	return 1;
+int* recupDist(){
+	int posDist[2];
+	posDist[0] = 5;
+	posDist[1] = 5;
+	return posDist;
 }
 int debPartie(){
 	return 1;
 }
-int boutonDeclenche(){}
-int butValide(){}
+int boutonDeclenche(){
+	return 1;
+}
+int butValide(){
+	return 1;
+}
 
 void reinitialiserDonnees(){
 	ecrire_pos(1, 1, 0, 0);
@@ -30,9 +36,15 @@ void reinitialiserDonnees(){
 
 int main(int argc, char *argv[])
 {	
+	int status = system("cd monitoring/bin");
+	int status = system("./monitoringServer.farm");
+
 	ecrire_pos(1, 1, 0, 0);
 	enleverBallon();
 	int etat = 0;
+	int xCible;
+	int yCible;
+
 	while(partieFinie() == 0){
 
 		int pid = fork();
@@ -46,12 +58,12 @@ int main(int argc, char *argv[])
 					break;
 
 				case 1: //Recupération des informations de parties
-					if (recupInfoPartie() == NULL){
+					if (!recupDist()){
 						printf("En attente d'information de partie\n");
 					}
 					else{
-						int xCible = recupInfoPartie().distributeur[1].x; // Récupèration des coordonnées du distributeur
-						int yCible = recupInfoPartie().distributeur[1].y;
+						int xCible = recupDist()[0]; // Récupèration des coordonnées du distributeur
+						int yCible = recupDist()[1];
 						etat = 2;
 					}
 					break;
@@ -131,5 +143,6 @@ int main(int argc, char *argv[])
 		}
 
 	}
+	return 0;
 }
 
