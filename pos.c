@@ -40,14 +40,14 @@ int* recup_pos () {
 }
 
 void ecrire_pos(int x, int y, int rot, int new) {
+    int possedeBallon = ballonOK();
     FILE* fichier = NULL;
     fichier = fopen("pos.txt", "w+");
     char chaine[TAILLE_MAX] = ""; // Chaîne vide de taille TAILLE_MAX
     sprintf(chaine, "%d,%d,%d,%d",x,y,rot,new);
     fprintf(fichier, chaine);
     fclose(fichier);
-
-    int possedeBallon = ballonOK();
+    
     if(new){
         fichier = fopen("monitoring/dataPosition/verifiedPosition.txt", "w+");
         char chaine[TAILLE_MAX] = ""; // Chaîne vide de taille TAILLE_MAX
@@ -62,6 +62,7 @@ void ecrire_pos(int x, int y, int rot, int new) {
         fprintf(fichier, chaine);
         fclose(fichier);
     }
+
 }
 
 int nouvellePos(){

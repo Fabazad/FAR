@@ -12,9 +12,9 @@ int ballonOK () {
 	FILE* fichier = NULL;
     fichier = fopen("ballon.txt", "r");
     char chaine[TAILLE_MAX] = ""; // Chaîne vide de taille TAILLE_MAX
-    fseek(fichier,0, SEEK_END);
-	int taillef = ftell(fichier);
-	if(taillef == 0)
+    fgets(chaine, TAILLE_MAX, fichier); 
+	chaine[strlen(chaine)] = '\0';
+	if(strlen(chaine) == 0)
 	{
 		return 0; //Cas de fichier vide
 	}
@@ -23,14 +23,11 @@ int ballonOK () {
 		time_t times = time(NULL);
 		int timeballon;
 		char* idballon;
-		memset (chaine, 0, sizeof (chaine));
-		fgets(chaine, TAILLE_MAX, fichier); 
-		chaine[strlen(chaine)] = '\0';
-
     	char *tok = strtok(chaine, ",");
     	idballon = tok;
 		tok = strtok(NULL, " ");
 		timeballon = atoi(tok);
+
 		if(timeballon + 120 < times)
 		{
 			return 0; // Si le ballon est périmé
@@ -49,6 +46,7 @@ void enleverBallon(){
 }
 
 void entrerBallon(char* idBallon){
+	printf("idball : %s\n", idBallon);
 	time_t times = time(NULL);
 	FILE* fichier = NULL;
     fichier = fopen("ballon.txt", "w+");
@@ -56,6 +54,14 @@ void entrerBallon(char* idBallon){
     sprintf(chaine, "%s,%d",idBallon,times);
     fprintf(fichier, chaine);
     fclose(fichier);
+
+    fichier = fopen("public/idball", "w+");
+    char chaine2[TAILLE_MAX] = ""; // Chaîne vide de taille TAILLE_MAX
+
+    sprintf(chaine2, "%s", idBallon);
+    fprintf(fichier, chaine2);
+    fclose(fichier);
+    
 }
 
 
