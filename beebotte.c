@@ -111,15 +111,14 @@ int sendToBeBotte(char *canal, char *clefCanal, char *ressource, char *data[]) {
 
 
 
-int main(void)
+int sendData(void)
 {
 
-	char *infoApublier[5]; // exemple de 5 infos a publier
+	char *infoApublier[4]; // exemple de 5 infos a publier
 	infoApublier[0] = "type_msg=IP";
 	infoApublier[1] = "type_ent=RJ";
-	infoApublier[2] = "RFID=102030456";
-	infoApublier[3] = "couleur=rouge";
-	infoApublier[4] = "data=162.38.111.103";
+	infoApublier[2] = "num=430441381177012";
+	infoApublier[3] = "data=162.38.33.209";
 	// (attention : strcpy(infoApublier[3],"data=163.11.111.11") 
 	//    ne marche pas car pas d'espace memoire alloue encore a infoApublier[3] ) 
 
@@ -132,7 +131,7 @@ int main(void)
 	// !! TO DO : mettre ci-dessous le token du canal !!
 	// canal partie0 : 1494793564147_KNl54g97mG89kQSZ
 	// canal testVB : 1494771555601_5SGQdxJaJ8O1HBj4
-	char *channelKey = "1494771555601_5SGQdxJaJ8O1HBj4";
+	char *channelKey = "1494793564147_KNl54g97mG89kQSZ";
 
 	sendToBeBotte(channel,channelKey,ressource,infoApublier);	
 	return 0;

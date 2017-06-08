@@ -67,13 +67,8 @@ void ecrire_pos(int x, int y, int rot, int new) {
 
 int nouvellePos(){
     int* pos = recup_pos();
+    if(pos[3]){
+        printf("nouvelle pos");
+    }
     return pos[3];
 }
-
-
-/*int main(int argc, char *argv[])
-{
-    //int* pos = recup_pos();
-    //printf("%d,%d,%d,%d\n",pos[0],pos[1],pos[2],pos[3]);
-    ecrire_pos(7,3,70,0);
-}*/

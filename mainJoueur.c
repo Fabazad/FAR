@@ -3,6 +3,7 @@
 #include "deplacement.c"
 #include "serveurRobotPosition.c"
 #include "serveur_robot.c"
+#include "beebotte.c"
 #define X_TERRAIN 8
 #define Y_TERRAIN 12
 
@@ -40,7 +41,7 @@ int main(int argc, char *argv[])
 {	
 	int status = system("cd monitoring/bin && ./monitoringServer.farm &");
 	status = system("gcc joueur.c -o valBut && sudo ./valBut &");
-
+	sendData();
 
 	int pid = fork();
 	if(pid != 0){
